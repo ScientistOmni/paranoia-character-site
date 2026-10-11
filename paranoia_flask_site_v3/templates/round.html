@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block content %}<section class="hero"><p class="eyebrow">ROUND {{ game.round }} / {{ round_count }}</p><h1>希望を入力する</h1><p class="muted">{{ player.name }}（P{{ player.id+1 }}） · 残りXP：<strong>{{ player.state.xp }}</strong></p></section>
+{% if single_player_test %}<div class="notice info">1人テストモード：入力・提出・次画面への遷移を確認します。割当計算とXP消費は行われません。</div>{% endif %}
+{% if single_player_test %}<div class="notice info">1人テストモード：入力・提出・次画面への遷移を確認します。割当計算とXP消費は行われません。</div>{% endif %}
+<div class="two-column"><section class="panel"><form method="post" class="stack"><h2>希望能力</h2><p class="muted">第1〜第3希望を順番に選択してください。1〜3個、同じ能力は選べません。</p>
+{% for rank in range(1,4) %}<label>第{{ rank }}希望<select name="preferences" {% if rank==1 %}required{% endif %}><option value="">選択しない</option>{% for a in range(1,ability_count+1) %}<!--<option value="{{ a }}">A{{ a }}</option>--><option value="{{ a }}">{{ ability_names[a-1] }}</option>{% endfor %}</select></label>{% endfor %}
+<label>優先権として支払うXP<input type="number" name="bid" min="0" max="{{ player.state.xp }}" value="0" required></label><div class="notice info">入札XPはアルゴリズムの規則に従って処理されます。</div><button class="primary large">このラウンドの入力を提出</button></form></section>
+<aside class="panel sticky"><p class="eyebrow">YOUR CURRENT STATS</p><h2>現在の能力値</h2>{% include "_state.html" %}<div class="stat"><span>残りXP</span><strong>{{ player.state.xp }}</strong></div></aside></div>{% endblock %}

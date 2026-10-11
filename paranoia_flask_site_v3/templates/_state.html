@@ -1,0 +1,4 @@
+<!--
+<div class="ability-grid">{% for i in range(ability_count) %}<div class="ability-cell {% if player.state['values'][i]>0 %}positive{% elif player.state['values'][i]<0 %}negative{% else %}zero{% endif %}"><span>A{{ i+1 }}</span><strong>{{ '%+d'|format(player.state['values'][i]) }}</strong></div>{% endfor %}</div>
+-->
+    <div class="ability-grid">{% for i in range(ability_count) %}<div class="ability-cell {% if player.state['values'][i]>0 %}positive{% elif player.state['values'][i]<0 %}negative{% else %}zero{% endif %}"><span>{{ ability_names[i] }}</span><strong>{{ '%+d'|format(player.state['values'][i]) }}</strong></div>{% endfor %}</div>

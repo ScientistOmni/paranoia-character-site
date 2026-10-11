@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block content %}<section class="panel narrow"><p class="eyebrow">PARANOIA CHARACTER ALLOCATOR</p><h1>ゲームに参加</h1><p class="muted">主催者から共有されたルームコードと、自分のプレイヤー番号を入力してください。</p>
+<form method="post" class="stack"><label>ルームコード<input name="room_code" required autocomplete="off"></label>
+<label>プレイヤー番号<select name="player_id" required><option value="">選択してください</option>{% for p in available %}<option value="{{ p.id }}" {% if p.taken %}disabled{% endif %}>P{{ p.id+1 }}{% if p.taken %}（{{ p.name }}・使用中）{% else %}（空き）{% endif %}</option>{% endfor %}</select></label>
+<label>表示名<input name="name" maxlength="24" required placeholder="例：Alice"></label><button class="primary large" type="submit">参加する</button></form>
+<p class="small muted">試作版はルームコード＋プレイヤー枠による簡易ログインです。Cookieを失うと再ログインできない場合があるため、主催者に相談してください。</p></section>{% endblock %}

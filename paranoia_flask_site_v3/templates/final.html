@@ -1,0 +1,36 @@
+
+{% extends "base.html" %}{% block content %}<section class="hero">{% if single_player_test %}<div class="notice info">1人テストモード：5ラウンドの画面遷移テスト完了。本来のアルゴリズムによる能力値決定は行っていないため、これは完成キャラクターではありません。</div>{% endif %}<p class="eyebrow">FINAL CHARACTER SHEET</p><h1>全{{ round_count }}ラウンド終了</h1><p class="muted">{{ player.name }}（P{{ player.id+1 }}）の最終能力値です。</p></section>
+
+<section class="panel">
+  <!-- タイトルとコピーボタンを横並びにする -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+    <h2 style="margin: 0;">最終能力値</h2>
+    <button type="button" class="button primary" onclick="copyStats()">📋 クリップボードにコピー</button>
+  </div>
+
+  <!-- コピー用のテキストデータを生成しておく（画面には表示されません） -->
+  <textarea id="copyTarget" style="display: none;">{% for i in range(ability_count) %}{{ ability_names[i] }}: {{ '%+d'|format(player.state['values'][i]) }}{% if (i + 1) % 4 == 0 and not loop.last %}&#10;{% elif not loop.last %} {% endif %}{% endfor %}</textarea>
+
+  {% include "_state.html" %}
+  <div class="stat-row">
+    <div class="stat featured"><span>残りXP</span><strong>{{ player.state.xp }}</strong></div>
+    <div class="stat"><span>累計入札額</span><strong>{{ player.state.total_bid_paid }}</strong></div>
+    <div class="stat"><span>返却累計</span><strong>{{ player.state.total_bid_refunded }}</strong></div>
+  </div>
+</section>
+
+<section class="panel"><h2>全プレイヤーの最終状態</h2><div class="table-wrap"><table><thead><tr><th>プレイヤー</th><th>能力値</th><th>残りXP</th></tr></thead><tbody>{% for p in game.players %}<tr class="{% if p.id==player.id %}highlight{% endif %}"><td>P{{ p.id+1 }} · {{ p.name }}</td><td class="mono">{{ p.state['values'] }}</td><td>{{ p.state.xp }}</td></tr>{% endfor %}</tbody></table></div></section>
+
+<!-- コピー機能のJavaScript -->
+<script>
+function copyStats() {
+    const text = document.getElementById("copyTarget").value;
+    navigator.clipboard.writeText(text).then(() => {
+        alert("能力値をクリップボードにコピーしました！\nそのまま貼り付けできます。");
+    }).catch(err => {
+        alert("コピーに失敗しました。ブラウザの権限設定を確認してください。");
+        console.error('Clipboard Error:', err);
+    });
+}
+</script>
+{% endblock %}
